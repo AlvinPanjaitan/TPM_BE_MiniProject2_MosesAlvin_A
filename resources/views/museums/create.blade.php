@@ -18,7 +18,7 @@
     <div style="max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
         <h1>Tambah Museum Baru</h1>
 
-        <form action="{{ route('museums.store') }}" method="POST">
+        <form action="{{ route('museums.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div style="margin-bottom: 15px;">
@@ -43,6 +43,11 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="image" style="display: block;">Gambar Museum</label>
+                <input type="file" name="image" id="image" style="width: 100%; padding: 10px;">
             </div>
 
             <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px;">Simpan Museum</button>

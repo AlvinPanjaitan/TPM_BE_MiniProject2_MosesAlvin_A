@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +45,38 @@
         a:hover {
             background-color: #45a049;
         }
+        .image-container {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .museum-actions a {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+        .museum-actions a:hover {
+            background-color: #0056b3;
+        }
+        .museum-actions form {
+            display: inline-block;
+            margin: 0;
+        }
+        .museum-actions form button {
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .museum-actions form button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +91,8 @@
                 <th>Deskripsi</th>
                 <th>Lokasi</th>
                 <th>Kategori</th>
+                <th>Gambar</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -70,6 +102,23 @@
                     <td>{{ $museum->description }}</td>
                     <td>{{ $museum->location }}</td>
                     <td>{{ $museum->category->name }}</td>
+                    <td>
+                        @if($museum->image)
+                            <img src="{{ asset('storage/' . $museum->image) }}" alt="Museum Image" class="image-container">
+                        @else
+                            <span>No Image</span>
+                        @endif
+                    </td>
+                    <td class="museum-actions">
+                        <a href="{{ route('museums.edit', $museum->id) }}">Edit</a>
+
+                        <!-- Form untuk Delete Museum -->
+                        <form action="{{ route('museums.destroy', $museum->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus museum ini?')">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

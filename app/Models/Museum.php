@@ -9,7 +9,7 @@ class Museum extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'location', 'category_id'];
+    protected $fillable = ['name', 'description', 'location', 'category_id', 'image'];
 
     public function category()
     {
