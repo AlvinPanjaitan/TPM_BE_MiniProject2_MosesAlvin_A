@@ -82,7 +82,15 @@
 <body>
     <h1>Daftar Museum</h1>
 
-    <p><a href="{{ route('museums.create') }}">Tambah Museum Baru</a></p>
+    @auth
+        <p><a href="{{ route('museums.create') }}">Tambah Museum Baru</a></p>
+    @endauth
+
+    @if(session('success'))
+        <div style="color: green; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <table>
         <thead>
@@ -110,14 +118,17 @@
                         @endif
                     </td>
                     <td class="museum-actions">
-                        <a href="{{ route('museums.edit', $museum->id) }}">Edit</a>
+                        @auth
+                            <a href="{{ route('museums.edit', $museum->id) }}">Edit</a>
 
-                        <!-- Form untuk Delete Museum -->
-                        <form action="{{ route('museums.destroy', $museum->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus museum ini?')">Delete</button>
-                        </form>
+                            <form action="{{ route('museums.destroy', $museum->id) }}" method="POST" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus museum ini?')">Delete</button>
+                            </form>
+                        @else
+                            <span>Login untuk melakukan aksi</span>
+                        @endauth
                     </td>
                 </tr>
             @endforeach

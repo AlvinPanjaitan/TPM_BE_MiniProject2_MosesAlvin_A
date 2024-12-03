@@ -45,7 +45,6 @@ class MuseumController extends Controller
         return redirect()->route('museums.index')->with('success', 'Museum created successfully.');
     }
 
-    // Menambahkan method untuk menampilkan form Edit
     public function edit($id)
     {
         $museum = Museum::findOrFail($id);
@@ -53,7 +52,6 @@ class MuseumController extends Controller
         return view('museums.edit', compact('museum', 'categories'));
     }
 
-    // Menambahkan method untuk Update data museum
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -66,17 +64,16 @@ class MuseumController extends Controller
 
         $museum = Museum::findOrFail($id);
 
-        // Proses update jika ada gambar baru yang diupload
         if ($request->hasFile('image')) {
-            // Menghapus gambar lama jika ada
+            
             if ($museum->image) {
                 \Storage::delete('public/' . $museum->image);
             }
+
             $imagePath = $request->file('image')->store('images', 'public');
             $museum->image = $imagePath;
         }
 
-        // Update data museum
         $museum->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -87,17 +84,16 @@ class MuseumController extends Controller
         return redirect()->route('museums.index')->with('success', 'Museum updated successfully.');
     }
 
-    // Menambahkan method untuk menghapus museum
     public function destroy($id)
     {
         $museum = Museum::findOrFail($id);
 
-        // Menghapus gambar jika ada
+        
         if ($museum->image) {
             \Storage::delete('public/' . $museum->image);
         }
 
-        // Menghapus museum
+    
         $museum->delete();
 
         return redirect()->route('museums.index')->with('success', 'Museum deleted successfully.');
